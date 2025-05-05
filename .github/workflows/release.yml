@@ -1,0 +1,32 @@
+# This workflow is triggered on tag pushes and creates a release for the Obsidian plugin.
+# It packages the plugin files into a ZIP file and uploads it to the release.
+# The release is named after the tag, and the ZIP file contains only the necessary files.
+
+name: Release Obsidian Recent Tab Switcher
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Create ZIP with only plugin files
+      run: |
+        zip obsidian-recent-tab-switcher-${{ github.ref_name }}.zip main.js manifest.json styles.css
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: ${{ github.ref_name }}
+        name: Release ${{ github.ref_name }}
+        files: obsidian-recent-tab-switcher-${{ github.ref_name }}.zip
+        generate_release_notes: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

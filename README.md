@@ -1,4 +1,4 @@
-# Obsidian Recent Tab Switcher
+# Obsidian Recent Tab Switcher FAB
 
 A simple Obsidian plugin that adds a floating action button (FAB) to quickly switch between your two most recently used markdown tabs.
 

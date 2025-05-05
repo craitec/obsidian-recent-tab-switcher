@@ -16,14 +16,14 @@ A simple Obsidian plugin that adds a floating action button (FAB) to quickly swi
 
 1.  Download the `main.js`, `styles.css`, and `manifest.json` files from the [latest release](https://github.com/craitec/obsidian-recent-tab-switcher/releases/latest).
 2.  Navigate to your Obsidian vault's plugins folder: `YourVault/.obsidian/plugins/`.
-3.  Create a new folder named `recent-tab-switcher`.
+3.  Create a new folder named `recent-tab-switcher-fab`.
 4.  Place the downloaded `main.js`, `styles.css`, and `manifest.json` files into this new folder.
 5.  Reload Obsidian (Ctrl+R or Cmd+R).
-6.  Go to Settings -> Community Plugins, find "Recent Tab Switcher", and enable it.
+6.  Go to Settings -> Community Plugins, find "Recent Tab Switcher FAB", and enable it.
 
 ## Settings
 
-Access the plugin settings via Obsidian's Settings -> Community Plugins -> Recent Tab Switcher:
+Access the plugin settings via Obsidian's Settings -> Community Plugins -> Recent Tab Switcher FAB:
 
 * **Button Size:** Adjust the size of the floating button (in pixels).
 * **Button Opacity:** Adjust the transparency of the button (0=invisible, 1=solid).

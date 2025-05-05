@@ -51,7 +51,7 @@ Access the plugin settings via Obsidian's Settings -> Community Plugins -> Recen
     npx tsc
     ```
     *(Alternatively, if you have TypeScript installed globally, you could just run `tsc`)*.
-4.  **Copy to Vault:** Copy the generated `main.js` file, along with `styles.css` and `manifest.json`, to your Obsidian vault's plugin folder (e.g., `YourVault/.obsidian/plugins/recent-tab-switcher/`). Create the folder if it doesn't exist.
+4.  **Copy to Vault:** Copy the generated `main.js` file, along with `styles.css` and `manifest.json`, to your Obsidian vault's plugin folder (e.g., `YourVault/.obsidian/plugins/recent-tab-switcher-fab/`). Create the folder if it doesn't exist.
 5.  **Reload Obsidian:** Reload Obsidian (Ctrl+R or Cmd+R) or disable/enable the plugin to load the updated code.
 
 

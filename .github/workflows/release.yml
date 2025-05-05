@@ -7,7 +7,7 @@ name: Release Obsidian Recent Tab Switcher
 on:
   push:
     tags:
-      - 'v*.*.*'
+      - '*.*.*'
 
 jobs:
   release:

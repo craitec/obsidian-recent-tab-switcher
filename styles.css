@@ -1,0 +1,83 @@
+#recent-tab-fab {
+	--fab-actual-size: 50px;
+	--fab-actual-opacity: 1.0;
+    --fab-icon-scale-factor: 0.6; /* Ratio of icon size to button size */
+}
+
+#recent-tab-fab {
+	position: fixed;
+	z-index: 100;
+
+	/* Size and Shape - Use the CSS variable */
+	width: var(--fab-actual-size);
+	height: var(--fab-actual-size);
+	border-radius: calc(var(--fab-actual-size) / 3); /* Keep radius proportional */
+
+	/* Appearance - Use the CSS variable for opacity */
+	background-color: var(--background-secondary); /* Base background */
+	border: none;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); /* Base shadow */
+	color: var(--text-muted); /* Base icon color */
+	cursor: grab; /* Default cursor */
+    opacity: var(--fab-actual-opacity); /* Apply opacity */
+
+	/* Icon Alignment */
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	transition: opacity 0.2s ease, top 0.3s ease-out, left 0.3s ease-out;
+
+    user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -moz-user-select: none;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+#recent-tab-fab svg {
+	width: calc(var(--fab-actual-size) * var(--fab-icon-scale-factor));
+	height: calc(var(--fab-actual-size) * var(--fab-icon-scale-factor));
+    pointer-events: none;
+}
+
+
+#recent-tab-fab:hover:not(.is-dragging) {
+    /* Keep base styles */
+    background-color: var(--background-secondary);
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    opacity: var(--fab-actual-opacity);
+    color: var(--text-muted);
+    /* Cursor change happens implicitly via default state */
+}
+
+#recent-tab-fab:active:not(.is-dragging) {
+    /* Keep base styles */
+    background-color: var(--background-secondary);
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    opacity: var(--fab-actual-opacity);
+    color: var(--text-muted);
+    transform: none; /* Ensure no scaling */
+}
+
+/* Focus state - Ensure it looks identical to normal state */
+#recent-tab-fab:focus {
+    background-color: var(--background-secondary);
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    opacity: var(--fab-actual-opacity);
+    color: var(--text-muted); /* Match normal icon color */
+    outline: none; /* Ensure no outline */
+}
+
+/* Dragging State - Keep cursor and shadow change for feedback */
+#recent-tab-fab.is-dragging {
+    cursor: grabbing;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4); /* Keep enhanced shadow */
+    /* Keep other base styles */
+    background-color: var(--background-secondary);
+    opacity: var(--fab-actual-opacity);
+    color: var(--text-muted);
+    transform: none;
+    transition: none;
+}

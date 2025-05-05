@@ -2,7 +2,7 @@
 # It packages the plugin files into a ZIP file and uploads it to the release.
 # The release is named after the tag, and the ZIP file contains only the necessary files.
 
-name: Release Obsidian Recent Tab Switcher
+name: Release Recent Tab Switcher FAB Plugin
 
 on:
   push:

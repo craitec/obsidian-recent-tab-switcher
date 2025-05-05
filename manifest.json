@@ -1,10 +1,9 @@
 {
-	"id": "obsidian-recent-tab-switcher",
-	"name": "Recent Tab Switcher",
+	"id": "recent-tab-switcher-fab",
+	"name": "Recent Tab Switcher FAB",
 	"version": "1.0.0",
 	"minAppVersion": "1.0.0",
-	"description": "Adds a button to jump between the two most recent tabs.",
-	"author": "Tomas Selnekovic (craitec.com)",
-	"authorUrl": "https://github.com/craitec/obsidian-recent-tab-switcher",
+	"description": "Switch between two recent tabs using a floating action button.",
+	"author": "Tomas Selnekovic",
 	"isDesktopOnly": false
 }

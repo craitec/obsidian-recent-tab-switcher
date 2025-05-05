@@ -4,7 +4,7 @@ A simple Obsidian plugin that adds a floating action button (FAB) to quickly swi
 
 ## Features
 
-* **Floating Action Button:** Provides a persistent button on the screen for easy access.
+* **Floating Action Button (FAB):** Provides a persistent button on the screen for easy access.
 * **Quick Tab Switching:** Click the button to instantly jump between the current tab and the previously active markdown tab.
 * **Draggable Button:** Click and drag the button to place it anywhere on the screen.
 * **Persistent Position:** The button's position is saved and restored across Obsidian sessions.

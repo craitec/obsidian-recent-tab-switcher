@@ -119,7 +119,6 @@ class RecentTabsPlugin extends obsidian_1.Plugin {
                 // Timer was already null (fired or cancelled by drag) AND not dragging -> Long press completed action already happened in handleLongPress
                 // No action needed here for the long press case itself.
             }
-            // Cleanup
             this.removeGlobalListeners();
             // Reset state flags AFTER potential actions
             this.isDragging = false; // Reset dragging state

@@ -1,8 +1,8 @@
 {
 	"id": "recent-tab-switcher-fab",
 	"name": "Recent Tab Switcher FAB",
-	"version": "1.0.0",
-	"minAppVersion": "1.0.0",
+	"version": "1.0.1",
+	"minAppVersion": "1.0.1",
 	"description": "Switch between two recent tabs using a floating action button.",
 	"author": "Tomas Selnekovic",
 	"isDesktopOnly": false

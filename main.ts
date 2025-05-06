@@ -51,7 +51,6 @@ export default class RecentTabsPlugin extends Plugin {
     fabInitialY: number = 0;
 
     async onload() {
-        console.log(`Loading Recent Tabs FAB plugin`);
         await this.loadSettings();
         this.addSettingTab(new RecentTabsSettingTab(this.app, this));
 
@@ -76,7 +75,6 @@ export default class RecentTabsPlugin extends Plugin {
     }
 
     onunload() {
-        console.log('Unloading Recent Tabs FAB plugin');
         if (this.longPressTimer) clearTimeout(this.longPressTimer);
         this.removeGlobalListeners();
         this.fabElement?.remove();
@@ -90,7 +88,6 @@ export default class RecentTabsPlugin extends Plugin {
         this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
         // Basic migration check from previous dual-position structure
         if ((this.settings as any).fabPositionLeft && !this.settings.posPortraitLeft) {
-             console.log("Attempting to migrate old dual-position settings.");
              this.settings.posPortraitLeft = { ...(this.settings as any).fabPositionLeft };
              this.settings.posPortraitRight = { ...(this.settings as any).fabPositionRight };
              this.settings.activeIndexPortrait = (this.settings as any).activePositionIndex ?? 1;
@@ -104,12 +101,10 @@ export default class RecentTabsPlugin extends Plugin {
              delete (this.settings as any).activePositionIndex;
              await this.saveSettings();
          }
-        console.log('Settings loaded');
     }
 
     async saveSettings() {
         await this.saveData(this.settings);
-        console.log('Settings saved');
     }
 
     // --- FAB Creation and Styling ---
@@ -131,7 +126,6 @@ export default class RecentTabsPlugin extends Plugin {
         this.registerDomEvent(this.fabElement, 'click', (event) => {
             // This should ideally not be needed if pointerUp handles taps correctly
             if (this.isDragging) return; // Ignore clicks after dragging
-            console.log("Unexpected click event - Tap/LongPress should be handled earlier.");
         });
 
         document.body.appendChild(this.fabElement);
@@ -176,8 +170,6 @@ export default class RecentTabsPlugin extends Plugin {
         this.fabElement.style.left = `${clampedLeft}px`;
         this.fabElement.style.bottom = '';
         this.fabElement.style.right = '';
-
-        // console.log(`Applied position for ${landscape ? 'Landscape' : 'Portrait'} index ${activeIndex}: T ${clampedTop}px, L ${clampedLeft}px`);
     }
 
 
@@ -185,7 +177,6 @@ export default class RecentTabsPlugin extends Plugin {
     onPointerDown(event: MouseEvent | TouchEvent) {
         if (!this.fabElement || this.pointerDownHandled) return;
         this.pointerDownHandled = true;
-        console.log(`Pointer Down (${event.type})`);
 
         this.isDragging = false;
         if (this.longPressTimer) clearTimeout(this.longPressTimer);
@@ -212,10 +203,7 @@ export default class RecentTabsPlugin extends Plugin {
         // Start 1-second long press timer
         this.longPressTimer = window.setTimeout(() => {
             if (!this.isDragging) { // Only trigger if not dragging
-                console.log("Long press timer fired AND not dragging!");
                 this.handleLongPress();
-            } else {
-                console.log("Long press timer fired, but dragging started. Ignoring.");
             }
             this.longPressTimer = null; // Mark timer as handled
         }, 1000);
@@ -232,11 +220,9 @@ export default class RecentTabsPlugin extends Plugin {
             const deltaY = Math.abs(currentY - this.dragStartY);
             const dragThreshold = 5;
             if (deltaX > dragThreshold || deltaY > dragThreshold) {
-                console.log("Movement detected, confirming drag.");
                 if (this.longPressTimer) { // Cancel long press if dragging starts
                     clearTimeout(this.longPressTimer);
                     this.longPressTimer = null;
-                    console.log("Cleared long press timer due to movement.");
                 }
                 this.isDragging = true;
                 this.fabElement?.classList.add('is-dragging');
@@ -273,12 +259,9 @@ export default class RecentTabsPlugin extends Plugin {
         const wasDragging = this.isDragging;
         const longPressTimerStillPending = !!this.longPressTimer;
 
-        console.log(`Pointer Up (${event.type}). Was Dragging: ${wasDragging}, Timer Pending: ${longPressTimerStillPending}`);
-
         if (this.longPressTimer) { // Clear timer if it was pending
             clearTimeout(this.longPressTimer);
             this.longPressTimer = null;
-            console.log("Cleared pending long press timer on pointer up.");
         }
 
         this.removeGlobalListeners();
@@ -287,15 +270,12 @@ export default class RecentTabsPlugin extends Plugin {
         // --- Decide action ---
         if (wasDragging) {
             // Drag completed: Save position with overlap check
-            console.log("Pointer Up: Drag detected, saving position.");
             this.saveDraggedPosition(); // Call dedicated save function
         } else if (longPressTimerStillPending) {
             // Timer was cleared by this pointerUp -> TAP
-            console.log("Pointer Up: Tap detected (timer cleared).");
             this.jumpToRecentTab();
         } else {
             // Timer was already null (fired or cancelled by drag) AND not dragging -> Long press completed
-            console.log("Pointer Up: Ignoring, long press action completed earlier or drag cancelled timer.");
         }
 
         // Reset state flags
@@ -357,7 +337,6 @@ export default class RecentTabsPlugin extends Plugin {
             // Convert clamped pixels back to percentages
             finalTopPercent = (adjustedTopPx / window.innerHeight) * 100;
             finalLeftPercent = (adjustedLeftPx / window.innerWidth) * 100;
-            console.log(`Adjusted to T% ${finalTopPercent.toFixed(2)}, L% ${finalLeftPercent.toFixed(2)}`);
 
              // Apply the adjusted position visually immediately
             this.fabElement.style.top = `${adjustedTopPx}px`;
@@ -373,7 +352,6 @@ export default class RecentTabsPlugin extends Plugin {
         positionToUpdate.top = `${finalTopPercent.toFixed(2)}%`;
         positionToUpdate.left = `${finalLeftPercent.toFixed(2)}%`;
 
-        console.log(`Saving dragged position to index ${activeIndex} (${landscape ? 'Landscape' : 'Portrait'}): T ${positionToUpdate.top}, L ${positionToUpdate.left}`);
         this.saveSettings();
     }
 
@@ -381,17 +359,14 @@ export default class RecentTabsPlugin extends Plugin {
     // --- Long Press Handler (Called ONLY by Timer) ---
     handleLongPress() {
         // Assumes !this.isDragging check was done by the timer callback
-        console.log("Executing Long Press Action!");
         // Timer is marked null by the callback that calls this
 
         const landscape = this.isLandscape();
         // Toggle the active index for the CURRENT orientation
         if (landscape) {
             this.settings.activeIndexLandscape = this.settings.activeIndexLandscape === 0 ? 1 : 0;
-            console.log(`Toggled Landscape index to: ${this.settings.activeIndexLandscape}`);
         } else {
             this.settings.activeIndexPortrait = this.settings.activeIndexPortrait === 0 ? 1 : 0;
-            console.log(`Toggled Portrait index to: ${this.settings.activeIndexPortrait}`);
         }
 
         // Apply the *other* position (for the current orientation) visually
@@ -417,7 +392,6 @@ export default class RecentTabsPlugin extends Plugin {
 
     // --- Resize Handler ---
     handleResize() {
-        console.log("Resize/Orientation Change Detected");
         this.applyPosition(); // Re-apply position based on new orientation/index
         this.applyFabStyles();
     }
@@ -432,7 +406,6 @@ export default class RecentTabsPlugin extends Plugin {
     }
 
     jumpToRecentTab() {
-        console.log("Executing jumpToRecentTab");
         if (this.recentLeaves.length < 2) {
             new Notice('No previous tab available to switch to.'); // Updated notice
             return;
@@ -451,7 +424,6 @@ export default class RecentTabsPlugin extends Plugin {
              try {
                 this.app.workspace.setActiveLeaf(targetLeaf, { focus: true });
              } catch (error) {
-                 console.error('Error calling setActiveLeaf:', error);
                  new Notice('Error switching tabs. Check console.');
              }
         } else {

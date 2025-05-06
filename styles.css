@@ -1,83 +1,92 @@
 #recent-tab-fab {
-	--fab-actual-size: 50px;
-	--fab-actual-opacity: 1.0;
-    --fab-icon-scale-factor: 0.6; /* Ratio of icon size to button size */
+    --fab-actual-size: 50px; /* Controlled by settings */
+    --fab-actual-opacity: 1.0; /* Controlled by settings */
+    --fab-icon-scale-factor: 0.6; /* Ratio of icon size to button size (internal) */
+    --fab-top: 85%;  /* Default/initial value, JS will override */
+    --fab-left: 90%; /* Default/initial value, JS will override */
 }
 
+/* Base styles for the FAB */
 #recent-tab-fab {
-	position: fixed;
-	z-index: 100;
+    position: fixed;
+    z-index: var(--layer-popover); /* Use Obsidian's z-index variable if needed, or a high number */
 
-	/* Size and Shape - Use the CSS variable */
-	width: var(--fab-actual-size);
-	height: var(--fab-actual-size);
-	border-radius: calc(var(--fab-actual-size) / 3); /* Keep radius proportional */
+    /* Use the CSS variables for position */
+    top: var(--fab-top);
+    left: var(--fab-left);
 
-	/* Appearance - Use the CSS variable for opacity */
-	background-color: var(--background-secondary); /* Base background */
-	border: none;
-	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); /* Base shadow */
-	color: var(--text-muted); /* Base icon color */
-	cursor: grab; /* Default cursor */
-    opacity: var(--fab-actual-opacity); /* Apply opacity */
+    /* Size and Shape - Use the CSS variable */
+    width: var(--fab-actual-size);
+    height: var(--fab-actual-size);
+    border-radius: calc(var(--fab-actual-size) / 3); /* Keep radius proportional, slightly rounded square */
 
-	/* Icon Alignment */
-	display: flex;
-	justify-content: center;
-	align-items: center;
+    /* Appearance - Use the CSS variable for opacity */
+    background-color: var(--background-secondary);
+    border: 1px solid var(--background-modifier-border); /* Subtle border */
+    box-shadow: var(--shadow-s); /* Use Obsidian's shadow variable */
+    color: var(--text-muted);
+    cursor: grab;
+    opacity: var(--fab-actual-opacity);
 
-	transition: opacity 0.2s ease, top 0.3s ease-out, left 0.3s ease-out;
+    /* Icon Alignment */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0; /* Remove default button padding */
 
+    /* Transitions - Applied when not dragging */
+    transition: opacity 0.2s ease, top 0.3s ease-out, left 0.3s ease-out, background-color 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease-out;
+
+    /* User Interaction */
     user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
     -moz-user-select: none;
     outline: none;
-    -webkit-tap-highlight-color: transparent;
+    -webkit-tap-highlight-color: transparent; /* Remove tap highlight on mobile */
 }
 
+/* Style the SVG icon inside the button */
 #recent-tab-fab svg {
-	width: calc(var(--fab-actual-size) * var(--fab-icon-scale-factor));
-	height: calc(var(--fab-actual-size) * var(--fab-icon-scale-factor));
-    pointer-events: none;
+    width: calc(var(--fab-actual-size) * var(--fab-icon-scale-factor));
+    height: calc(var(--fab-actual-size) * var(--fab-icon-scale-factor));
+    pointer-events: none; /* Icon should not interfere with button events */
+    stroke-width: var(--icon-stroke-width, 2px); /* Match Obsidian's icon stroke */
 }
 
-
+/* Hover effect (when not dragging) */
 #recent-tab-fab:hover:not(.is-dragging) {
-    /* Keep base styles */
-    background-color: var(--background-secondary);
-	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-    opacity: var(--fab-actual-opacity);
-    color: var(--text-muted);
-    /* Cursor change happens implicitly via default state */
+    background-color: var(--background-secondary-alt);
+    box-shadow: var(--shadow-m); /* Slightly larger shadow on hover */
+    color: var(--text-normal); /* Slightly brighter icon on hover */
 }
 
+/* Active/Pressed effect (when not dragging) */
 #recent-tab-fab:active:not(.is-dragging) {
-    /* Keep base styles */
-    background-color: var(--background-secondary);
-	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-    opacity: var(--fab-actual-opacity);
-    color: var(--text-muted);
-    transform: none; /* Ensure no scaling */
+    background-color: var(--background-primary); /* Use primary for stronger feedback */
+    box-shadow: var(--shadow-xs); /* Inset or smaller shadow */
+    color: var(--text-normal);
+    transform: scale(0.95); /* Subtle press down effect */
+    transition-duration: 0.05s; /* Make press effect faster */
 }
 
-/* Focus state - Ensure it looks identical to normal state */
+/* Focus state - Make it visually distinct for accessibility if needed, */
+/* but often FABs don't need strong focus rings unless navigated via keyboard. */
+/* For now, keep it subtle or same as base */
 #recent-tab-fab:focus {
-    background-color: var(--background-secondary);
-	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-    opacity: var(--fab-actual-opacity);
-    color: var(--text-muted); /* Match normal icon color */
-    outline: none; /* Ensure no outline */
+    /* Example: Add subtle outline if needed for keyboard navigation */
+    /* box-shadow: var(--shadow-m), 0 0 0 2px var(--background-modifier-border-focus); */
+    outline: none; /* Keep outline none for default */
 }
 
-/* Dragging State - Keep cursor and shadow change for feedback */
+/* Dragging State */
 #recent-tab-fab.is-dragging {
     cursor: grabbing;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4); /* Keep enhanced shadow */
-    /* Keep other base styles */
-    background-color: var(--background-secondary);
-    opacity: var(--fab-actual-opacity);
+    box-shadow: var(--shadow-l); /* Enhanced shadow for visual lift */
+    background-color: var(--background-secondary); /* Keep background consistent */
+    opacity: calc(var(--fab-actual-opacity) * 0.9); /* Slightly more transparent when dragging */
     color: var(--text-muted);
-    transform: none;
-    transition: none;
+    transform: none; /* Ensure no scaling from :active state persists */
+    /* Disable transitions while actively dragging for instant feedback */
+    transition: none !important;
 }
